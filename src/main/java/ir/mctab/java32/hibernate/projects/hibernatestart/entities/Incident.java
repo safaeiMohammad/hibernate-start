@@ -1,7 +1,9 @@
 package ir.mctab.java32.hibernate.projects.hibernatestart.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "incident")
@@ -19,6 +21,9 @@ public class Incident {
 
     @Column(name = "create_date", nullable = false)
     private Date createDate;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "incident")
+    private List<IncidentComment> incidentComments = new ArrayList<>();
 
     public Incident() {
 
@@ -60,6 +65,14 @@ public class Incident {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public List<IncidentComment> getIncidentComments() {
+        return incidentComments;
+    }
+
+    public void setIncidentComments(List<IncidentComment> incidentComments) {
+        this.incidentComments = incidentComments;
     }
 
     @Override

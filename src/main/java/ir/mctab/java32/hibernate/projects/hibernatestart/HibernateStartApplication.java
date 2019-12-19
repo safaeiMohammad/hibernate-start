@@ -2,6 +2,7 @@ package ir.mctab.java32.hibernate.projects.hibernatestart;
 
 import ir.mctab.java32.hibernate.projects.hibernatestart.config.hibenate.HibernateUtil;
 import ir.mctab.java32.hibernate.projects.hibernatestart.entities.Incident;
+import ir.mctab.java32.hibernate.projects.hibernatestart.entities.IncidentComment;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -16,7 +17,35 @@ public class HibernateStartApplication {
     }
 
     protected void step2() {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        // get session
+        Session session = sessionFactory.openSession();
+        // transaction start
+        session.beginTransaction();
+        // ----------------------------
+        Incident incident = session.load(Incident.class, 7L);
+        IncidentComment incidentComment = new IncidentComment();
+        incidentComment.setComment("do something ...");
+        incidentComment.setIncident(incident);
+        session.save(incidentComment);
 
+        // fin by id
+        IncidentComment incidentComment1 = session.load(IncidentComment.class, 1L);
+        System.out.println("Incident Comment {1}");
+        System.out.println(incidentComment1);
+
+        // load incident {id: 8}
+        System.out.println("load incident {id: 8}");
+        Incident incident8 = session.load(Incident.class, 8L);
+        System.out.println(incident8);
+        System.out.println(incident8.getIncidentComments().size());
+
+
+
+        // ----------------------------
+        // transaction commit
+        session.getTransaction().commit();
+        session.close();
     }
 
     protected void step1() {
